@@ -62,26 +62,6 @@ let reserve: Reserve = (
 // reminder: call is a function that takes a function and a variable number of
 // arguments; and applies those arguments to the function
 
-function fill(num : number, ch: string){
-  let i = 0;
-  while (i < num){
-    console.log(ch);
-    i++;
-  }
-}
-
-// from the book page 78:
-function call<T extends unknown[], R>(
-  f: (...args: T) => R,
-  ...args: T
-): R {
-  return f(...args)
-}
-
-let a = call(fill, 5, 'a')
-a
-
-/* proposed solution
 function call<T extends [unknown, string, ...unknown[]], R>(
   f: (...args: T) => R,
   ...args: T
@@ -94,4 +74,4 @@ function fill(length: number, value: string): string[] {
 }
 
 call(fill, 10, 'a') // string[]
-*/
+
