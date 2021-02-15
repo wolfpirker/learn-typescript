@@ -75,6 +75,7 @@ function fill(length: number, value: string): string[] {
 
 call(fill, 10, 'a') // string[]
 
+<<<<<<< HEAD
 // 5. Implement a small typesafe assertion library, is. Start by sketching out
 // your types. When you’re done, I should be able to use it like this:
 
@@ -97,3 +98,5 @@ is([1], [1, 2], [1, 2, 3]) // false
 function is<T>(a: T, ...b: [T, ...T[]]): boolean {
   return b.every(_ => _ === a)
 }
+=======
+>>>>>>> 50940f7d855a73415c1aca890998d027a9358de5
