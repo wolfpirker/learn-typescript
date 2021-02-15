@@ -62,26 +62,6 @@ let reserve: Reserve = (
 // reminder: call is a function that takes a function and a variable number of
 // arguments; and applies those arguments to the function
 
-function fill(num : number, ch: string){
-  let i = 0;
-  while (i < num){
-    console.log(ch);
-    i++;
-  }
-}
-
-// from the book page 78:
-function call<T extends unknown[], R>(
-  f: (...args: T) => R,
-  ...args: T
-): R {
-  return f(...args)
-}
-
-let a = call(fill, 5, 'a')
-a
-
-/* proposed solution
 function call<T extends [unknown, string, ...unknown[]], R>(
   f: (...args: T) => R,
   ...args: T
@@ -94,4 +74,26 @@ function fill(length: number, value: string): string[] {
 }
 
 call(fill, 10, 'a') // string[]
-*/
+
+// 5. Implement a small typesafe assertion library, is. Start by sketching out
+// your types. When you’re done, I should be able to use it like this:
+
+// Compare a string and a string
+is('string', 'otherstring') // false
+
+// Compare a boolean and a boolean
+is(true, false) // false
+
+// Compare a number and a number
+is(42, 42) // true
+
+// Comparing two different types should give a compile-time error
+// is(10, 'foo') // Error TS2345: Argument of type '"foo"' is not assignable
+// to parameter of type 'number'.
+
+// [Hard] I should be able to pass any number of arguments
+is([1], [1, 2], [1, 2, 3]) // false
+
+function is<T>(a: T, ...b: [T, ...T[]]): boolean {
+  return b.every(_ => _ === a)
+}
