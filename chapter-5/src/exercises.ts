@@ -109,26 +109,26 @@ new RequestBuilder()
 // (This answer courtesy of @albertywu)
 
 interface BuildableRequest {
-  data?: object
+  data?: object // -> optional
   method: 'get' | 'post'
   url: string
 }
 
 class RequestBuilder2 {
-  data?: object
-  method?: 'get' | 'post'
-  url?: string
+  data?: object //1
+  method?: 'get' | 'post' //2
+  url?: string //3
 
   setData(data: object): this & Pick<BuildableRequest, 'data'> {
-    return Object.assign(this, {data})
+    return Object.assign(this, {data}) //1
   }
 
   setMethod(method: 'get' | 'post'): this & Pick<BuildableRequest, 'method'> {
-    return Object.assign(this, {method})
+    return Object.assign(this, {method}) //2
   }
 
   setURL(url: string): this & Pick<BuildableRequest, 'url'> {
-    return Object.assign(this, {url})
+    return Object.assign(this, {url}) //3
   }
 
   build(this: BuildableRequest) {
@@ -137,7 +137,7 @@ class RequestBuilder2 {
 }
 
 new RequestBuilder2()
-  .setData({})
+  .setData({}) // -> optional
   .setMethod('post') // Try removing me!
   .setURL('bar') // Try removing me!
   .build()

@@ -73,32 +73,56 @@ Shoe.create('boot') // Boot
 
 // 4# builder pattern
 // page 109
-class RequestBilder{
-    private data: object | null = null
-    private method: 'get' | 'post' | null = null
-    
-    private url: string | null = null
-    setURL(url: string): this {
-        this.url = url
-        return this
-    }
 
-    setMethod(method: 'get' | 'post'): this {
-        this.method = method
-        return this
-    }
-    setData(data: object): this {
-        this.url = this.url
-        return this
-    }
+// 4a) [HARD]
+// Hint:  Would it be easier to make this guarantee if you also force the user to call methods in a specific order?
+// What can you return instead of this?
 
-    send(){
+class RequestBuilder{
+    protected data: object | null = null
+    protected method: 'get' | 'post' | null = null
+    protected url: string | null = null
 
-    }
+    // required method!
+    setMethod(method: 'get' | 'post'): RequestBuilderWithMethod {
+        return new RequestBuilderWithMethod().setMethod(method).setData(this.data)
+      }
+
+    setData(data: object | null): this {
+        this.data = data
+        return this
+     }
 }
 
-new RequestBilder()
-    .setURL('/users')
-    .setMethod('get')
-    .setData({firstName: 'Anna'})
+class RequestBuilderWithMethod extends RequestBuilder {
+    // 1st required method,     
+    setMethod(method: 'get' | 'post' | null): this {
+      this.method = method
+      return this
+    }
+    // 2nd required method
+    setURL(url: string): RequestBuilderWithMethodAndURL {
+      return new RequestBuilderWithMethodAndURL()
+        .setMethod(this.method)
+        .setURL(url)
+        .setData(this.data)
+    }
+  }
+  
+  class RequestBuilderWithMethodAndURL extends RequestBuilderWithMethod {
+      // last required method
+    setURL(url: string): this {
+      this.url = url
+      return this
+    }
+    send() {
+      // ...
+    }
+  }
+
+let rb = new RequestBuilder()
+
+rb.setMethod('get') // -> required for send()
+    .setData({}) // optional
+    .setURL('foo.com') // -> required for send(
     .send()
