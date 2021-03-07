@@ -43,7 +43,9 @@ onmessage = <C extends keyof MatrixProtocol>({
   data: {command: C; args: MatrixProtocol[C]['in']}
 }) => {
   let handler = handlers[command]
-  let result = handler(...args)
+  let m = [[0], [0]]
+  let result = handler(m, m)
+  // let result = handler(...args) // aruments for the rest parameter were not provided, expected 2 arguments but got 0
   postMessage(result)
 }
 
